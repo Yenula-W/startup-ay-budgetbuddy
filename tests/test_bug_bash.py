@@ -35,8 +35,8 @@ class TestBugBash(unittest.TestCase):
             {"amount": -2.5}, {"amount": 20.0}, {"amount": -6.75},
             {"amount": -12.0}, {"amount": -3.25}, {"amount": 15.0},
         ]}
-        with patch.object(storage, "load_data", return_value=data), \\
-             patch("builtins.input", side_effect=["7", "0"]), \\
+        with patch.object(storage, "load_data", return_value=data), \
+             patch("builtins.input", side_effect=["7", "0"]), \
              patch("builtins.print") as output:
             main.main()
         lines = [str(call.args[0]) for call in output.call_args_list if call.args]
