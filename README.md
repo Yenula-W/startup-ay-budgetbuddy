@@ -41,7 +41,7 @@ and a Notes line telling you which files it touches.
 | `main.py` | The menu loop you interact with |
 | `storage.py` | Loads and saves the JSON data file |
 | `features/core.py` | The transactions, the balance, and small helpers |
-| `features/reports.py` | Summary reports (half-built on purpose - you finish it via a ticket) |
+| `features/reports.py` | Account summary and signed category totals |
 | `data/budgetbuddy.json` | The transaction history and starting balance |
 | `tests/test_core.py` | Example tests to copy from |
 | `tickets/` | The eight tickets your squad works through |
@@ -54,6 +54,12 @@ Read **[CONTRIBUTING.md](CONTRIBUTING.md)**. A pull request is done only when
 all five are true: the ticket is linked, it runs, a squadmate reviewed it, a
 test covers it, and the docs reflect the change. Never commit straight to
 `main` - it is what a new teammate clones and what the demo runs from.
+
+## Release candidate
+
+See [the product guide](docs/README.md), [release notes](docs/RELEASE_NOTES.md), and
+[the demo walkthrough](docs/DEMO.md). Menu option 6 shows signed category totals;
+option 3 accepts a category and validates amounts before saving.
 
 ## Next steps
 
