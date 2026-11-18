@@ -38,20 +38,39 @@ def main():
         elif choice == "2":
             core.list_transactions(core.get_transactions(data))
         elif choice == "3":
-            description = input("Description: ")
-            amount = float(input("Amount: "))
-            core.add_transaction(data, description, amount)
+            try:
+                description = input("Description: ")
+                amount = float(input("Amount (negative for an expense): "))
+                category = input("Category [general]: ")
+                core.add_transaction(data, description, amount, category)
+            except ValueError as error:
+                print("Transaction not added: " + str(error))
+                continue
+            except EOFError:
+                print("\nTransaction cancelled.")
+                break
             storage.save_data(data)
             print("Transaction added.")
         elif choice == "4":
-            category = input("Category: ").strip()
+            try:
+                category = input("Category: ").strip()
+            except EOFError:
+                print()
+                break
             matches = core.transactions_by_category(core.get_transactions(data), category)
+            if not matches:
+                print("No transactions in this category.")
             for t in matches:
                 print("- " + t["description"])
         elif choice == "5":
-            print(core.last_transaction(core.get_transactions(data))["description"])
+            transaction = core.last_transaction(core.get_transactions(data))
+            print(transaction["description"] if transaction else "No transactions yet.")
         elif choice == "6":
-            print(core.count_by_category(core.get_transactions(data)))
+            totals = reports.category_report(data)
+            if not totals:
+                print("No transactions yet.")
+            for category, amount in sorted(totals.items()):
+                print(category + ": $" + format(amount, ".2f"))
         elif choice == "7":
             txns = core.get_transactions(data)
             print("Spent $" + str(core.total_spent(txns)) + " over " + str(len(txns)) +

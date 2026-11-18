@@ -1,40 +1,54 @@
 # BudgetBuddy
 
-A small spending/allowance tracker you run in the terminal. Add transactions,
-list them, and see your balance. This is your squad's starting product for
-Elite 101 - you'll grow it one ticket at a time.
+BudgetBuddy is a small Python command-line spending and allowance tracker. It loads a JSON account, shows your balance, records transactions, and provides basic summaries. This is the Elite 101 course project, not a deployed financial service.
 
-## Run it
+## Requirements and quick start
 
-```bash
-python main.py
-```
+- Python 3 with no third-party dependencies.
+- From the repository root, run `python main.py` (or `python3 main.py` on macOS).
+- At `Pick an option:`, enter a menu number. Enter `0` to quit.
+- Run the existing tests with `python -m unittest` (or `python3 -m unittest`).
 
-## Run the tests
+## Release candidate menu
 
-```bash
-python -m unittest
-```
+| Option | Behavior |
+| --- | --- |
+| `1` | Display the starting balance plus signed transaction amounts. |
+| `2` | List transactions with their IDs, descriptions, and amounts. |
+| `3` | Add a transaction and save the updated JSON file. Negative amounts represent expenses; positive amounts represent income. Enter a category or leave it blank to use `general`. Invalid amounts, non-finite numbers, and empty descriptions are rejected without saving. |
+| `4` | Show transactions matching a category string exactly. |
+| `5` | Show the latest transaction's description, or an empty-history message. |
+| `6` | Show signed totals by category, rounded to cents. Expenses are negative and income is positive. |
+| `7` | Show total spending from negative amounts, transaction count, and average signed transaction amount. |
+| `8` | Show the account name and transaction count. |
+| `0` | Quit. |
 
-## How it's laid out
+## Sample data and storage
 
-| File | What it does |
-|---|---|
-| `main.py` | The menu loop you interact with |
-| `storage.py` | Loads and saves the JSON data file |
-| `features/core.py` | The transactions, the balance, and small helpers |
-| `features/reports.py` | Summary reports (half-built - finish it via a ticket) |
-| `data/budgetbuddy.json` | The transaction history and starting balance |
-| `tests/test_core.py` | Example tests to copy from |
+The initial account is in `data/budgetbuddy.json`, including `account_name`, `starting_balance`, and a `transactions` list. Each transaction has `id`, `description`, `amount`, and `category`. The sample file starts with a $50 opening balance and six transactions. **Option 3 modifies this tracked JSON file**, so use a copy if you want to preserve the sample data.
 
-## Team
+## Repository layout
 
-<!-- Add yourself here on your Git lesson: - Your Name (role) -->
+| Path | Purpose |
+| --- | --- |
+| `main.py` | CLI menu and input loop |
+| `storage.py` | JSON loading and saving |
+| `features/core.py` | Balances, transaction helpers, and category counts |
+| `features/reports.py` | Account summary and signed category totals |
+| `data/budgetbuddy.json` | Example account data and transaction history |
+| `tests/test_core.py` | Starter tests: opening balance and new transaction ID |
+| `tests/test_release.py` | Regression tests for category totals, validation, and the menu |
+| `docs/DEMO.md` | Repeatable demo and submission checklist |
+| `docs/RELEASE_NOTES.md` | Current release scope and known limits |
 
-- (your squad will add themselves here)
+## Known limitations
 
-## Where to start
+- Category matching is exact and case-sensitive.
+- Amounts use Python floats in the core and JSON storage; this educational project is not suitable for banking or precise accounting.
+- The application expects its bundled JSON schema and a writable data file; corrupted files and disk-write failures are not recovered automatically.
+- This is a local CLI that stores data in one JSON file; there is no authentication, hosted deployment, or bank integration.
+- Lesson-specific bug fixes and average-balance tests in separate open PRs are not part of this release candidate. The release changes themselves are **not included in `main`** until reviewed and merged. See the release notes.
 
-Pick a ticket from the `tickets/` folder (or the Issues tab once your section
-repo exists). Read `CONTRIBUTING.md` for the Definition of Done every pull
-request has to meet.
+## Contributing and review
+
+Use a feature branch and pull request rather than committing directly to `main`. Read `CONTRIBUTING.md` for the ticket, tests, docs, and review checklist. This v1.0 release preparation lives on `release/v1.0` and should be reviewed before merge.

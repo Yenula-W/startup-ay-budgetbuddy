@@ -1,8 +1,6 @@
-"""Reporting helpers for BudgetBuddy.
+"""Account summaries and signed category totals for BudgetBuddy."""
 
-Heads up: this module is half-built on purpose. `account_summary` works, but
-`category_report` is still a stub with a clear seam to finish (see the tickets).
-"""
+from decimal import Decimal
 
 
 def account_summary(data):
@@ -10,7 +8,9 @@ def account_summary(data):
 
 
 def category_report(data):
-    # TODO(ticket): tally each transaction into a {category: total amount} dict and return it.
-    # For now this returns an empty report so the menu never crashes.
+    """Return signed totals by category, rounded to cents after summing."""
     report = {}
-    return report
+    for transaction in data["transactions"]:
+        category = transaction["category"]
+        report[category] = report.get(category, Decimal("0")) + Decimal(str(transaction["amount"]))
+    return {category: float(round(total, 2)) for category, total in report.items()}

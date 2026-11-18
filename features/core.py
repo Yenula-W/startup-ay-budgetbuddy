@@ -1,11 +1,19 @@
 """Core BudgetBuddy logic: transactions, balance, and small helpers."""
 
+import math
+
 
 def get_transactions(data):
     return data["transactions"]
 
 
 def add_transaction(data, description, amount, category="general"):
+    description = description.strip()
+    category = category.strip() or "general"
+    if not description:
+        raise ValueError("Description cannot be empty.")
+    if not math.isfinite(amount):
+        raise ValueError("Amount must be a finite number.")
     new_id = max((t["id"] for t in data["transactions"]), default=0) + 1
     tx = {"id": new_id, "description": description, "amount": amount, "category": category}
     data["transactions"].append(tx)
@@ -34,7 +42,7 @@ def count_by_category(transactions):
 
 
 def last_transaction(transactions):
-    return transactions[len(transactions) - 1]
+    return transactions[-1] if transactions else None
 
 
 def total_spent(transactions):
